@@ -1,0 +1,69 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static "/css/main.css" %}" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+    <title>Последние вакансии</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static "img/favicon-16x16.png" %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a class="header__a" href="{% url 'index' %}">
+                <img class="header__logo" src="{% static "img/logo.png" %}" alt="Логотип">
+                <h1>Web-разработчик</h1>
+            </a>
+        </div>
+    </header>
+    <main class="container">
+        <ul class="navigation">
+            <li class="visited"><a href="{% url 'index' %}">Главная</a></li>
+            <li class="visited"><a href="{% url 'demand' %}">Востребованность</a></li>
+            <li class="visited"><a href="{% url 'geography' %}">География</a></li>
+            <li class="visited"><a href="{% url 'skills' %}">Навыки</a></li>
+            <li class="current"><a href="{% url 'vacancies' %}">Последние вакансии</a></li>
+        </ul>
+        <div class="main-content">
+            <div class="main-content__wrapper">
+                {% block content %}
+                     {% for p in paragraphs %}
+                        <h2>{{ p.title }}</h2>
+                         {% if p.text|length > 0 %}
+                            {{ p.text|safe }}
+                        {% endif %}
+                    {% endfor %}
+                    <ul class="vacancies">
+                        {% for vac in vacancies %}
+                        <li class="vacancies__vacancy">
+                            <div class="vacancies__wrapper">
+                                <a href="{{ vac.vac_url }}" target="_blank">{{ vac.name }}</a>
+                                <p class="vacancies__time">{{ vac.time }} {{ vac.date }}</p>
+                            </div>
+                            <p class="vacancies__salary">{{ vac.salary }}</p>
+                            <p class="vacancies__city">{{ vac.city }}</p>
+                            <p class="vacancies__company">{{ vac.company }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__wrapper">
+                <p>Плешивцев Денис Владимирович<br>РИ-210948</p>
+                <div class="footer__contacts">
+                    <a href="https://github.com/FleshM/Django" target="_blank"><img class="header__logo" src="{% static "img/ghlogo.svg" %}" alt="GitHub"></a>
+                    <a href="https://t.me/flesshit" target="_blank"><img class="header__logo" src="{% static "img/tglogo.svg" %}" alt="Telegram"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
